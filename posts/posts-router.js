@@ -3,6 +3,7 @@ const db = require("../data/db")
 
 const router = express.Router()
 
+// Create posts
 router.post("/", (req, res) => {
     if (!req.body.title || !req.body.contents) {
 		return res.status(400).json({
@@ -22,6 +23,7 @@ router.post("/", (req, res) => {
 		})
 })
 
+// Create comments by ID
 router.post("/:id/comments", (req, res) => {
     const { id } = req.params;
     const comment = {...req.body, post_id: req.params.id };
@@ -47,6 +49,7 @@ router.post("/:id/comments", (req, res) => {
     }
 })
 
+// GET posts
 router.get("/", (req, res) => {
     db.find(req.params)
     .then((posts) => {
@@ -60,6 +63,7 @@ router.get("/", (req, res) => {
     })
 })
 
+// GET posts by ID
 router.get("/:id", (req, res) => {
     db.findById(req.params.id)
 		.then((post) => {
@@ -79,6 +83,7 @@ router.get("/:id", (req, res) => {
 		})
 })
 
+// GET comments by ID
 router.get("/:id/comments", (req, res) => {
     db.findPostComments(req.params.id)
         .then((comments) => {
@@ -99,6 +104,7 @@ router.get("/:id/comments", (req, res) => {
         })
 }) 
 
+// Delete posts by ID
 router.delete("/:id", (req, res) => {
     db.remove(req.params.id)
     .then((count) => {
@@ -120,6 +126,7 @@ router.delete("/:id", (req, res) => {
     })
 })
 
+// Update posts by ID
 router.put("/:id", (req, res) => {
     if (!req.body.title || !req.body.contents) {
 		return res.status(400).json({
